@@ -8,6 +8,8 @@ import { RegistrarPageRoutingModule } from './registrar-routing.module';
 
 import { RegistrarPage } from './registrar.page';
 
+
+
 @NgModule({
   imports: [
     CommonModule,

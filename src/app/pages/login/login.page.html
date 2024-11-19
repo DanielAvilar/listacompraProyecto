@@ -1,30 +1,20 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <div>
+<ion-content>
+  <form (submit)="loginUser()">
     <ion-item>
-      <ion-label position="floating">Username</ion-label>
-      <ion-input [(ngModel)]="usuario"></ion-input>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input [(ngModel)]="email" name="email" type="email"></ion-input>
     </ion-item>
+
     <ion-item>
-      <ion-label position="floating">Clave</ion-label>
-      <ion-input type="clave" [(ngModel)]="contrasena"></ion-input>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
     </ion-item>
 
-    <ion-button (click)="login(usuario, clave)">Iniciar Sesión</ion-button>
+    <ion-button expand="block" type="submit">Iniciar Sesión</ion-button>
 
-    <ion-text color="danger" *ngIf="loginFailed">
-      Usuario o clave incorrectos
-    </ion-text>
-    <ion-item line="none">
-      <ion-text color="medium">
-        <a routerLink="/registrar">¿No tienes una cuenta? Registrate aqui</a>
-      </ion-text>
-    </ion-item>
-  </div>
-  
+    <!-- Usar la directiva ngIf para mostrar el error -->
+    <div *ngIf="error" style="color: red;">
+      <p>{{ error }}</p>
+    </div>
+  </form>
 </ion-content>

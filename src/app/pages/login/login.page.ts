@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { AuthService } from 'src/app/servicios/auth.service';
+import { AuthService } from 'src/app/firebase/auth.service';
+import { FirestoreService } from 'src/app/firebase/firestore.service';
 
 @Component({
   selector: 'app-login',
@@ -10,57 +10,44 @@ import { AuthService } from 'src/app/servicios/auth.service';
 })
 export class LoginPage implements OnInit {
 
-  usuario: string = '';
-  clave: string = '';
+// Variables para almacenar el email y la contraseña del formulario
+email: string = '';
+password: string = '';
 
-  private authService = inject(AuthService);
-  private router = inject(Router);
+error: string = '';
 
-  private loginFailedSubject = new BehaviorSubject(false);
-  loginFailed$ = this.loginFailedSubject.asObservable();
-  loginFailed: boolean;
-
+constructor(private authService: AuthService, private firestoreService: FirestoreService, private router: Router) {
+ this.error = '';
+}
   ngOnInit(): void {
-    this.authService.loginFailed$.subscribe(loginFailed => this.loginFailed = loginFailed);
+    console.log('login');
   }
 
-  constructor() {}
+// Método para manejar el inicio de sesión
+async loginUser() {
+  try {
+    // Iniciar sesión
+    const userCredential = await this.authService.login(this.email, this.password);
 
-  isLoading: boolean = false;
-  async login(usuario: string,clave: string){
+    // Obtener el UID del usuario autenticado
+    const uid = userCredential.user?.uid;
 
-    this.isLoading = true;
-    await this.authService.buscarBD4(usuario,clave);
-    this.isLoading = false;
+    // Obtener el rol del usuario desde Firestore
+    const userData = await this.firestoreService.getUser(uid);
+    const rol = userData ? userData['rol'] : null;
 
-    this.authService.isAuthenticated$.subscribe(isAuthenticated => {
-
-      this.authService.usuarioCompleto$.subscribe(usuarioCompleto => {
-        if (isAuthenticated) {
-          this.usuario = ''; 
-          this.clave = ''; 
-
-          if (usuarioCompleto != null && usuarioCompleto){
-            if (usuarioCompleto.rol === "vendedor") {
-              console.log('LOGIN: ' + usuarioCompleto.rol);
-              this.usuario = ''; 
-              this.clave = ''; 
-              this.router.navigate(['/vendedor']); 
-            }
-            else{
-              this.usuario = ''; 
-              this.clave = ''; 
-              this.router.navigate(['/cliente']); 
-            }
-          }
-
-        } else {
-          this.loginFailed = true; 
-        }
-
-      });
-
-    });
+    // Redirigir según el rol
+    if (rol === 'cliente') {
+      this.router.navigate(['/cliente']);
+    } else if (rol === 'vendedor') {
+      this.router.navigate(['/vendedor']);
+    } else {
+      console.error('Rol desconocido:', rol);
+      this.error = 'Rol no definido';
+    }
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    this.error = this.authService.GenerarError(error);  // Asignar el mensaje de error
   }
-
+}
 }
