@@ -1,92 +1,106 @@
 // Estilos para el formulario de registro
 // Formulario de registro
+// Contenedor del formulario
 .register-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 400px;
-    width: 100%;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000000;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+// Campos del formulario
+ion-item {
+  max-width: 300px;
+  width: 100%;
+  --min-height: 44px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  --highlight-color-focused: #3880ff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+// Inputs personalizados
+ion-input {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-size: 14px;
+  --background: #f9f9f900;
+  border-radius: 6px;
+}
+
+// Selector de rol
+ion-select {
+  --padding-start: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+// Botón estilizado
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  width: 10%;
+}
+
+ion-button {
+  flex: 1;
+  --height: 40px;
+  --border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
   }
-  
-  // Estilo para los ion-items (inputs)
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Mensaje de error
+.error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+// Encabezado
+ion-header {
+  --background: linear-gradient(90deg, #3880ff 0%, #3171e3 100%);
+  --color: white;
+}
+
+ion-toolbar {
+  padding: 16px 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+// Responsividad
+@media (max-width: 480px) {
+  .register-form {
+    padding: 12px;
+  }
+
   ion-item {
-    margin-bottom: 16px;
-    --highlight-color-focused: #3880ff;
+    max-width: 260px;
   }
-  
-  // Estilo para los ion-label
-  ion-label {
-    color: #333;
-    font-weight: 600;
-  }
-  
-  // Estilo de los inputs
-  ion-input {
-    --border-color: #ccc;
-    --background: #fff;
-    --padding-start: 12px;
-  }
-  
-  // Estilos para el ion-select
-  ion-select {
-    --padding-start: 12px;
-  }
-  
-  // Estilo para el botón
+
   ion-button {
-    margin-top: 20px;
-    --background: #3880ff;
-    --border-radius: 8px;
-    --color: #fff;
-    --height: 48px;
-  
-    &:hover {
-      --background: #3171e3;
-    }
+    max-width: 260px;
   }
-  
-  // Estilo para el mensaje de error
-  div.error-message {
-    color: red;
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  
-  // Estilos para el ion-header
-  ion-header {
-    --background: #3880ff;
-    --color: white;
-  }
-  
-  ion-toolbar {
-    background-color: #3880ff;
-    padding: 10px;
-  }
-  
+
   ion-title {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
+    font-size: 16px;
   }
-  
-  // Responsividad: Pantallas más pequeñas
-  @media (max-width: 600px) {
-    .register-form {
-      padding: 16px;
-    }
-  
-    ion-button {
-      --height: 44px;
-    }
-  
-    ion-title {
-      font-size: 18px;
-    }
-  }
+}

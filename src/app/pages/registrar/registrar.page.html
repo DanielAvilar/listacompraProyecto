@@ -1,8 +1,4 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
     <form (submit)="registerUser()">
@@ -35,6 +31,7 @@
       </ion-item>
 
       <ion-button expand="block" type="submit">Registrarse</ion-button>
+      <ion-button expand="block" color="light" (click)="goToLogin()">Volver</ion-button>
 
       <div *ngIf="error" style="color: red;">
         <p>{{ error }}</p>

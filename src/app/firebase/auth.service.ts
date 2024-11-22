@@ -17,6 +17,11 @@ export class AuthService {
       if (user) {
         // Si el usuario está autenticado, obtener datos adicionales desde Firestore
         const userData = await this.firestoreService.getUser(user.uid);
+        if (!userData) {
+          console.error(`No se encontraron datos para el usuario con UID ${user.uid}`);
+          this.authStateSubject.next(null);
+          return;
+        }
         const fullUserData = {
           uid: user.uid,
           email: user.email,
@@ -34,6 +39,8 @@ export class AuthService {
   register(email: string, password: string) {
     return createUserWithEmailAndPassword(this.afAuth, email, password);
   }
+
+ 
 
   // Método para iniciar sesión con email y password
   login(email: string, password: string) {

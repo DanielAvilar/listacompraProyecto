@@ -10,19 +10,34 @@ export class FirestoreService {
   constructor(private firestore: Firestore) {}
 
   // Método para crear un nuevo usuario en Firestore
-  createUser(uid: string, userData: User) {
-    // 1. Obtener la referencia al documento en la colección 'users' con el UID del usuario
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-
-    // 2. Usar setDoc para almacenar los datos del usuario en el documento
-    return setDoc(userDocRef, userData);
+  async createUser(uid: string, userData: { name: string; email: string; phone: string; rol: string }) {
+    try {
+      const userDocRef = doc(this.firestore, `Users/${uid}`);
+      await setDoc(userDocRef, userData);
+      console.log('Usuario creado correctamente:', uid);
+    } catch (error) {
+      console.error('Error al crear el usuario en Firestore:', error);
+      throw error;
+    }
   }
 
   // Método para obtener los datos de un usuario por su UID
   async getUser(uid: string) {
-    const userDocRef = doc(this.firestore, `users/${uid}`);
-    const userDoc = await getDoc(userDocRef);
-    return userDoc.exists() ? userDoc.data() : null;
+    try {
+      const userDocRef = doc(this.firestore, `Users/${uid}`);
+      console.log(`Consultando el documento con UID ${uid}`);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        console.log('Documento encontrado:', userDoc.data());
+        return userDoc.data();
+      } else {
+        console.warn(`No se encontró ningún documento para el UID ${uid}`);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error al obtener el documento del usuario:', error);
+      throw error;
+    }
   }
 
 }

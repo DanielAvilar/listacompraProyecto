@@ -10,6 +10,8 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
+// Servicios
+import { FirestoreObjectsService } from 'src/app/firebase/firestore.objects.service';
 @NgModule({
   declarations: [AppComponent],
   imports: [

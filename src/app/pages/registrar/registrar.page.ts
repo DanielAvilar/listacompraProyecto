@@ -16,7 +16,7 @@ export class RegistrarPage implements OnInit {
   name: '',
   email: '',
   phone: '',
-  rol: ''  // Inicialmente vacío, pero será 'alumno' o 'docente'
+  rol: ''  
 };
 
 error: string = ''
@@ -33,26 +33,34 @@ constructor(
   ngOnInit(): void {
     console.log('register');
   }
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
 
 // Método que se ejecutará al enviar el formulario de registro
 async registerUser() {
   try {
-    // 1. Registrar el usuario en Firebase Authentication usando email y password
+    // Validar que todos los campos estén completos
+    if (!this.userData.name || !this.userData.email || !this.userData.phone || !this.userData.rol || !this.password) {
+      this.error = 'Por favor completa todos los campos.';
+      return;
+    }
+
+    // Registrar el usuario en Firebase Authentication
     const userCredential = await this.authService.register(this.userData.email, this.password);
 
-    // 2. Obtener el UID del usuario registrado
+    // Obtener el UID del usuario registrado
     const uid = userCredential.user?.uid;
 
-    // 3. Almacenar los datos adicionales en Firestore bajo el UID del usuario
+    // Almacenar los datos adicionales en Firestore
     if (uid) {
-      // Crear un nuevo objeto que excluya el campo 'password'
       const { name, email, phone, rol } = this.userData;
 
-      // Guardar en Firestore sin la contraseña
+      // Crear el documento en Firestore
       await this.firestoreService.createUser(uid, { name, email, phone, rol });
 
-      // 4. Redirigir al usuario a la página de inicio o a otra página
-      this.router.navigate(['/login']);  // Redirige a home
+      // Redirigir al usuario
+      this.router.navigate(['/login']);
     }
   } catch (error) {
     console.error('Error registrando al usuario:', error);

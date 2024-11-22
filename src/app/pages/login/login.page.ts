@@ -22,6 +22,9 @@ constructor(private authService: AuthService, private firestoreService: Firestor
   ngOnInit(): void {
     console.log('login');
   }
+  goToLogin() {
+    this.router.navigate(['/registrar']);
+  }
 
 // Método para manejar el inicio de sesión
 async loginUser() {
@@ -30,7 +33,11 @@ async loginUser() {
     const userCredential = await this.authService.login(this.email, this.password);
 
     // Obtener el UID del usuario autenticado
-    const uid = userCredential.user?.uid;
+    const uid = userCredential?.user?.uid;
+if (!uid) {
+  this.error = 'Error al obtener el UID del usuario.';
+  return;
+}
 
     // Obtener el rol del usuario desde Firestore
     const userData = await this.firestoreService.getUser(uid);

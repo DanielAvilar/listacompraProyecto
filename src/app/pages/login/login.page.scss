@@ -1,87 +1,97 @@
-// Estilos para el formulario de inicio de sesión
-// Formulario de login
+/* Contenedor principal para centrar el contenido */
+.login-container {
+  display: flex; /* Establece un contenedor flexible */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
+  height: 100vh; /* Asegura que el contenedor ocupe todo el alto de la pantalla */
+  background-color: #f8f9fa; /* Fondo claro opcional */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Formulario de login */
 .login-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 400px;
-    width: 100%;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #000000;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los ion-items (inputs) */
+ion-item {
+  max-width: 300px;
+  width: 100%;
+  --min-height: 44px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  --highlight-color-focused: #3880ff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo de los inputs */
+ion-input {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-size: 14px;
+  --background: #f9f9f900;
+  border-radius: 6px;
+}
+
+/* Estilos para el botón */
+ion-button {
+  margin-top: 20px;
+  --background: #3880ff;
+  --border-radius: 8px;
+  --color: #fff;
+  --height: 48px;
+  --width: 100%;
+  max-width: 300px;
+}
+
+ion-button:hover {
+  --background: #3171e3;
+}
+
+/* Estilo para el mensaje de error */
+div.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Estilos para el ion-header */
+ion-header {
+  --background: linear-gradient(90deg, #3880ff 0%, #3171e3 100%);
+  --color: white;
+}
+
+ion-toolbar {
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+/* Responsividad: Pantallas más pequeñas */
+@media (max-width: 600px) {
+  .login-form {
+    padding: 16px;
   }
-  
-  // Estilo para los ion-items (inputs)
-  ion-item {
-    margin-bottom: 16px;
-    --highlight-color-focused: #3880ff;
-  }
-  
-  // Estilo para los ion-label
-  ion-label {
-    color: #333;
-    font-weight: 600;
-  }
-  
-  // Estilo de los inputs
-  ion-input {
-    --border-color: #ccc;
-    --background: #fff;
-    --padding-start: 12px;
-  }
-  
-  // Estilos para el botón
+
   ion-button {
-    margin-top: 20px;
-    --background: #3880ff;
-    --border-radius: 8px;
-    --color: #fff;
-    --height: 48px;
-  
-    &:hover {
-      --background: #3171e3;
-    }
+    --height: 44px;
   }
-  
-  // Estilo para el mensaje de error
-  div.error-message {
-    color: red;
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-  
-  // Estilos para el ion-header
-  ion-header {
-    --background: #3880ff;
-    --color: white;
-  }
-  
-  ion-toolbar {
-    background-color: #3880ff;
-    padding: 10px;
-  }
-  
+
   ion-title {
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
+    font-size: 18px;
   }
-  
-  // Responsividad: Pantallas más pequeñas
-  @media (max-width: 600px) {
-    .login-form {
-      padding: 16px;
-    }
-  
-    ion-button {
-      --height: 44px;
-    }
-  
-    ion-title {
-      font-size: 18px;
-    }
+
+  ion-footer {
+    padding: 0; /* Remueve cualquier padding */
   }
+}
