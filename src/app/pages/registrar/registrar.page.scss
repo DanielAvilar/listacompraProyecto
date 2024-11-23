@@ -1,6 +1,18 @@
 // Estilos para el formulario de registro
 // Formulario de registro
 // Contenedor del formulario
+
+
+.registrar-content {
+  display: flex; /* Establece un contenedor flexible */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
+  height: 100vh; /* Asegura que el contenedor ocupe todo el alto de la pantalla */
+  background-color: #f8f9fa; /* Fondo claro opcional */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
 .register-form {
   max-width: 400px;
   width: 100%;
@@ -12,7 +24,10 @@
   background-color: #000000;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5%;
 }
+
+
 
 // Campos del formulario
 ion-item {
@@ -34,37 +49,6 @@ ion-input {
   border-radius: 6px;
 }
 
-// Selector de rol
-ion-select {
-  --padding-start: 8px;
-  font-size: 14px;
-  border-radius: 6px;
-}
-
-// Botón estilizado
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 20px;
-  width: 10%;
-}
-
-ion-button {
-  flex: 1;
-  --height: 40px;
-  --border-radius: 8px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: scale(1.02);
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-}
-
 // Mensaje de error
 .error-message {
   color: #e74c3c;
@@ -80,27 +64,4 @@ ion-header {
   --color: white;
 }
 
-ion-toolbar {
-  padding: 16px 0;
-  text-align: center;
-  font-size: 18px;
-}
 
-// Responsividad
-@media (max-width: 480px) {
-  .register-form {
-    padding: 12px;
-  }
-
-  ion-item {
-    max-width: 260px;
-  }
-
-  ion-button {
-    max-width: 260px;
-  }
-
-  ion-title {
-    font-size: 16px;
-  }
-}

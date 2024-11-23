@@ -1,7 +1,10 @@
 
 
-<ion-content>
-    <form (submit)="registerUser()">
+<ion-content style="justify-content: center;">
+
+    <form (submit)="registerUser()" class="register-form">
+
+      
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input [(ngModel)]="userData.name" name="name"></ion-input>
@@ -30,14 +33,18 @@
         </ion-select>
       </ion-item>
 
-      <ion-button expand="block" type="submit">Registrarse</ion-button>
-      <ion-button expand="block" color="light" (click)="goToLogin()">Volver</ion-button>
 
-      <div *ngIf="error" style="color: red;">
-        <p>{{ error }}</p>
-      </div>
+    
+    <ion-button expand="block" type="submit">Registrarse</ion-button>
+    <ion-button expand="block" color="light" (click)="goToLogin()">Volver</ion-button>
 
-    </form>
+    <div *ngIf="error" style="color: red;">
+      <p>{{ error }}</p>
+    </div>
+
+  </form>
+ 
+    
 
 
   
