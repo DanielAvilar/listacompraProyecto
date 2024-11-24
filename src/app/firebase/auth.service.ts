@@ -7,30 +7,26 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-
-  private authStateSubject = new BehaviorSubject<any>(null);  // Variable observable para todos los datos del usuario
-  authState$ = this.authStateSubject.asObservable();  // Observable que otros componentes pueden suscribirse
-  
+  private authStateSubject = new BehaviorSubject<any>(null); // Estado global
+  authState$ = this.authStateSubject.asObservable(); // Observable de estado global
 
   constructor(private afAuth: Auth, private firestoreService: FirestoreService) {
-    // Escuchar cambios en el estado de autenticación
     onAuthStateChanged(this.afAuth, async (user) => {
-      if (user) {
-        // Si el usuario está autenticado, obtener datos adicionales desde Firestore
-        const userData = await this.firestoreService.getUser(user.uid);
-        if (!userData) {
-          console.error(`No se encontraron datos para el usuario con UID ${user.uid}`);
+      if (user?.uid) {
+        try {
+          const userData = await this.firestoreService.getUser(user.uid);
+          if (userData) {
+            const fullUserData = { uid: user.uid, ...userData };
+            this.authStateSubject.next(fullUserData);
+          } else {
+            console.error('Datos de usuario no encontrados.');
+            this.authStateSubject.next(null);
+          }
+        } catch (error) {
+          console.error('Error obteniendo datos del usuario:', error);
           this.authStateSubject.next(null);
-          return;
         }
-        const fullUserData = {
-          uid: user.uid,
-          email: user.email,
-          ...userData,  // Combinar los datos de autenticación con los datos adicionales
-        };
-        this.authStateSubject.next(fullUserData);  // Emitir todos los datos
       } else {
-        // Si no hay usuario autenticado, emitir null
         this.authStateSubject.next(null);
       }
     });

@@ -23,7 +23,9 @@ const routes: Routes = [
   },
   {
     path: 'vendedor',
-    loadChildren: () => import('./pages/vendedor/vendedor.module').then( m => m.VendedorPageModule)
+    loadChildren: () => 
+      import('./pages/vendedor/vendedor.module').then( m => m.VendedorPageModule),
+    canActivate: [AuthGuard], // Agregar la guarda a la ruta
   },
 ];
 

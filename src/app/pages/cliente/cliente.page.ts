@@ -19,33 +19,44 @@ export class ClientePage implements OnInit {
 
   ngOnInit() {
     const currentUser = this.authService.getCurrentUser();
-    console.log('Usuario autenticado:', currentUser);
     if (currentUser && currentUser.uid) {
       this.uid = currentUser.uid;
-
-      // Obtener listas en tiempo real
-      this.firestoreObjectsService.getLists(this.uid).subscribe((data) => {
-        this.lists = data;
-      });
+      this.cargarListas(); // Método separado para cargar las listas
+    } else {
+      console.error('Usuario no autenticado');
+      this.authService.logout(); // Forzar cierre de sesión si no hay usuario
     }
   }
 
+  cargarListas() {
+    if (!this.uid) return;
+    this.firestoreObjectsService.getLists(this.uid).subscribe({
+      next: (data) => {
+        this.lists = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar listas:', error);
+      },
+    });
+  }
   // Método para agregar una nueva lista
   addList() {
     if (this.uid) {
+      console.log('UID del usuario:', this.uid); // Verifica que el UID sea correcto
       const newList = {
         name: `Lista ${this.lists.length + 1}`,
         createdAt: new Date(),
       };
-
+  
       this.firestoreObjectsService.addList(this.uid, newList).then(() => {
         console.log('Lista agregada correctamente');
       }).catch((error) => {
         console.error('Error al agregar la lista:', error);
       });
+    } else {
+      console.error('UID no disponible. El usuario no está autenticado.');
     }
   }
-
   // Método para eliminar una lista
   deleteList(listId: string) {
     if (this.uid) {
