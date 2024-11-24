@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { AuthGuard } from 'src/app/firebase/auth.guard.service';
 const routes: Routes = [
   {
     path: '',
@@ -17,7 +17,9 @@ const routes: Routes = [
   },
   {
     path: 'cliente',
-    loadChildren: () => import('./pages/cliente/cliente.module').then( m => m.ClientePageModule)
+    loadChildren: () =>
+      import('./pages/cliente/cliente.module').then((m) => m.ClientePageModule),
+    canActivate: [AuthGuard], // Agregar la guarda a la ruta
   },
   {
     path: 'vendedor',

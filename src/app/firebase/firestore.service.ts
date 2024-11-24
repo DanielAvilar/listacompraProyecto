@@ -21,6 +21,7 @@ export class FirestoreService {
     }
   }
 
+
   // Método para obtener los datos de un usuario por su UID
   async getUser(uid: string) {
     try {

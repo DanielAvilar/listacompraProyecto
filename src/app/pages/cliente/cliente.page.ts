@@ -19,6 +19,7 @@ export class ClientePage implements OnInit {
 
   ngOnInit() {
     const currentUser = this.authService.getCurrentUser();
+    console.log('Usuario autenticado:', currentUser);
     if (currentUser && currentUser.uid) {
       this.uid = currentUser.uid;
 
