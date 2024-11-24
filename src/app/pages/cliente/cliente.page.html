@@ -1,21 +1,25 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Cliente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Cerrar Sesión</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="object-container">
-    <!-- Botón para agregar objetos -->
-    <ion-button expand="block" (click)="addObject()">Agregar Objeto</ion-button>
+  <div class="list-container">
+    <!-- Botón para agregar listas -->
+    <ion-button expand="block" (click)="addList()">Agregar Lista</ion-button>
 
-    <!-- Mostrar lista de objetos -->
+    <!-- Mostrar listas -->
     <ion-list>
-      <ion-item *ngFor="let object of objects">
+      <ion-item *ngFor="let list of lists">
         <ion-label>
-          <h2>{{ object.name }}</h2>
-          <p>{{ object.createdAt?.toDate() | date: 'short' }}</p>
+          <h2>{{ list.name }}</h2>
+          <p>{{ list.createdAt?.toDate() | date: 'short' }}</p>
         </ion-label>
+        <ion-button color="danger" (click)="deleteList(list.id)">Eliminar</ion-button>
       </ion-item>
     </ion-list>
   </div>

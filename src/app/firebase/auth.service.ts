@@ -10,6 +10,7 @@ export class AuthService {
 
   private authStateSubject = new BehaviorSubject<any>(null);  // Variable observable para todos los datos del usuario
   authState$ = this.authStateSubject.asObservable();  // Observable que otros componentes pueden suscribirse
+  
 
   constructor(private afAuth: Auth, private firestoreService: FirestoreService) {
     // Escuchar cambios en el estado de autenticación

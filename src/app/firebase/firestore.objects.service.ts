@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, doc, setDoc, collectionData, addDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirestoreObjectsService {
-  private objectsCollection;
+  constructor(private firestore: Firestore) {}
 
-  constructor(private firestore: Firestore) {
-    this.objectsCollection = collection(this.firestore, 'objects'); // Colección 'objects'
+  // Método para obtener la referencia de la colección de listas de un usuario
+  private getUserListsCollection(uid: string) {
+    return collection(this.firestore, `Users/${uid}/lists`);
   }
 
-  // Método para agregar un objeto a la colección
-  addObject(data: any): Promise<any> {
-    return addDoc(this.objectsCollection, data); // Agrega un documento a Firestore
+  // Crear una nueva lista
+  addList(uid: string, list: { name: string; createdAt: Date }): Promise<any> {
+    const userListsCollection = this.getUserListsCollection(uid);
+    return addDoc(userListsCollection, list);
   }
 
-  // Método para obtener todos los objetos como un observable
-  getObjects(): Observable<any[]> {
-    return collectionData(this.objectsCollection, { idField: 'id' }); // Escucha cambios en tiempo real
+  // Obtener todas las listas del usuario
+  getLists(uid: string): Observable<any[]> {
+    const userListsCollection = this.getUserListsCollection(uid);
+    return collectionData(userListsCollection, { idField: 'id' });
+  }
+
+  // Eliminar una lista
+  deleteList(uid: string, listId: string): Promise<void> {
+    const listDoc = doc(this.firestore, `Users/${uid}/lists/${listId}`);
+    return deleteDoc(listDoc);
   }
 }

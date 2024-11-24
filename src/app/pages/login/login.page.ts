@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/firebase/auth.service';
 import { FirestoreService } from 'src/app/firebase/firestore.service';
+import { UtilsService } from 'src/app/firebase/utils.service'; // Importa el servicio del spinner
 
 @Component({
   selector: 'app-login',
@@ -9,52 +10,56 @@ import { FirestoreService } from 'src/app/firebase/firestore.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  email: string = '';
+  password: string = '';
+  error: string = '';
 
-// Variables para almacenar el email y la contraseña del formulario
-email: string = '';
-password: string = '';
+  constructor(
+    private authService: AuthService,
+    private firestoreService: FirestoreService,
+    private router: Router,
+    private utilsService: UtilsService // Inyecta el servicio del spinner
+  ) {
+    this.error = '';
+  }
 
-error: string = '';
-
-constructor(private authService: AuthService, private firestoreService: FirestoreService, private router: Router) {
- this.error = '';
-}
   ngOnInit(): void {
     console.log('login');
   }
+
   goToLogin() {
     this.router.navigate(['/registrar']);
   }
 
-// Método para manejar el inicio de sesión
-async loginUser() {
-  try {
-    // Iniciar sesión
-    const userCredential = await this.authService.login(this.email, this.password);
+  // Método para manejar el inicio de sesión
+  async loginUser() {
+    const loading = await this.utilsService.loading(); // Obtén el componente de loading
+    await loading.present(); // Muestra el spinner
 
-    // Obtener el UID del usuario autenticado
-    const uid = userCredential?.user?.uid;
-if (!uid) {
-  this.error = 'Error al obtener el UID del usuario.';
-  return;
-}
+    try {
+      const userCredential = await this.authService.login(this.email, this.password);
+      const uid = userCredential?.user?.uid;
+      if (!uid) {
+        this.error = 'Error al obtener el UID del usuario.';
+        return;
+      }
 
-    // Obtener el rol del usuario desde Firestore
-    const userData = await this.firestoreService.getUser(uid);
-    const rol = userData ? userData['rol'] : null;
+      const userData = await this.firestoreService.getUser(uid);
+      const rol = userData ? userData['rol'] : null;
 
-    // Redirigir según el rol
-    if (rol === 'cliente') {
-      this.router.navigate(['/cliente']);
-    } else if (rol === 'vendedor') {
-      this.router.navigate(['/vendedor']);
-    } else {
-      console.error('Rol desconocido:', rol);
-      this.error = 'Rol no definido';
+      if (rol === 'cliente') {
+        this.router.navigate(['/cliente']);
+      } else if (rol === 'vendedor') {
+        this.router.navigate(['/vendedor']);
+      } else {
+        console.error('Rol desconocido:', rol);
+        this.error = 'Rol no definido';
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      this.error = this.authService.GenerarError(error); // Asigna el mensaje de error
+    } finally {
+      await loading.dismiss(); // Oculta el spinner al finalizar
     }
-  } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    this.error = this.authService.GenerarError(error);  // Asignar el mensaje de error
   }
-}
 }
